@@ -23,12 +23,12 @@ namespace CSharplight
     {
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-
             const string CommandShowPlayerDamage = "1";
             const string CommandShowFireBall = "2";
             const string CommandShowExplosion = "3";
             const string CommandShowHealing = "4";
+            
+            Console.ForegroundColor = ConsoleColor.Green;
 
             int playerMaxHealth = 100;
             int playerNowHealth = 100;
@@ -102,7 +102,6 @@ namespace CSharplight
                         break;
 
                         case CommandShowHealing:
-
                         for (int i = 0; i < maxAmountOfHealing; i++)
                         {
 

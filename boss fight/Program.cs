@@ -42,7 +42,7 @@ namespace CSharplight
             int manaForFireball = 30;
             int playerExplosion = random.Next(40, 50);
             int manaForExplosion = 50;
-            int healingAmount = random.Next(25, 35);
+            int healingAmount = random.Next(45, 65);
             int maxAmountOfHealing = 2;
             int amountOfHealing = 0;
             int actualHeal;
@@ -60,13 +60,10 @@ namespace CSharplight
 
                 string userInput = Console.ReadLine();
 
-                playerNowHealth = playerNowHealth - bossDamage;
-
                 switch (userInput)
                 {
-
                     case CommandPlayerDamage:
-                        bossHealth = bossHealth - playerDamage;
+                        bossHealth -= playerDamage;
                         Console.WriteLine($"Вы использовали обычную атаку и нанесли {playerDamage} урона\nВы получили {bossDamage} урона от босса");
                         break;
 
@@ -74,8 +71,8 @@ namespace CSharplight
 
                         if (playerNowMana > 0 && playerNowMana >= manaForFireball)
                         {
-                            bossHealth = bossHealth - playerFireball;
-                            playerNowMana = playerNowMana - manaForFireball;
+                            bossHealth -= playerFireball;
+                            playerNowMana -= manaForFireball;
                             playerCanCastFireball = true;
                             Console.WriteLine($"Вы использовали огненный шар и нанесли {playerFireball} урона\nВы получили {bossDamage} урона от босса");
                         }
@@ -89,8 +86,8 @@ namespace CSharplight
 
                         if (playerNowMana > 0 && playerCanCastFireball && playerNowMana >= manaForExplosion)
                         {
-                            bossHealth = bossHealth - playerExplosion;
-                            playerNowMana = playerNowMana - manaForExplosion;
+                            bossHealth -= playerExplosion;
+                            playerNowMana -= manaForExplosion;
                             playerCanCastFireball = false;
                             Console.WriteLine($"Вы использовали взрыв и нанесли {playerExplosion} урона\nВы получили {bossDamage} урона от босса");
                         }
@@ -127,6 +124,12 @@ namespace CSharplight
                         playerNowHealth = playerMaxHealth - bossDamage;
                         Console.WriteLine("Ошибка при вводе команды или не выполнено условие,пропуск хода...\nВы получили {bossDamage} урона от босса");
                         break;
+
+                }
+
+                if (userInput != CommandHealing)
+                {
+                    playerNowHealth -= bossDamage;
                 }
 
                 if (playerNowHealth <= 0 && bossHealth <= 0)

@@ -31,9 +31,9 @@ namespace CSharplight
             Console.ForegroundColor = ConsoleColor.Green;
 
             int playerMaxHealth = 100;
-            int playerNowHealth = 100;
+            int playerСurrentHealth = 100;
             int playerMaxMana = 80;
-            int playerNowMana = 80;
+            int playerCurrentMana = 80;
             int availableHealing;
             int manaRestoration;
             Random random = new Random();
@@ -53,9 +53,9 @@ namespace CSharplight
             int bossHealth = 125;
             int bossDamage = random.Next(35, 50);
 
-            while (bossHealth > 0 && playerNowHealth > 0)
+            while (bossHealth > 0 && playerСurrentHealth > 0)
             {
-                Console.WriteLine($"Бой с боссом, ваше здоровье: {playerNowHealth}\nваша мана: {playerNowMana}\nумения:\n1.Обычная атака\n2.Огненный шар(тратит {manaForFireball} маны)\n3.Взрыв(Тратит {manaForExplosion}, можно вызывать, только если был использован огненный шар. Для повторного применения надо повторно использовать огненный шар)\n4.Лечение(Восстанавливает здоровье и ману, но не больше их максимального значения. Можно использовать {maxAmountOfHealing} раз)");
+                Console.WriteLine($"Бой с боссом, ваше здоровье: {playerСurrentHealth}\nваша мана: {playerCurrentMana}\nумения:\n{CommandPlayerDamage}.Обычная атака\n{CommandFireBall}.Огненный шар(тратит {manaForFireball} маны)\n{CommandExplosion}.Взрыв(Тратит {manaForExplosion}, можно вызывать, только если был использован огненный шар. Для повторного применения надо повторно использовать огненный шар)\n{CommandHealing}.Лечение(Восстанавливает здоровье и ману, но не больше их максимального значения. Можно использовать {maxAmountOfHealing} раз)");
                 Console.WriteLine($"Здоровье босса {bossHealth}");
 
                 string userInput = Console.ReadLine();
@@ -68,11 +68,10 @@ namespace CSharplight
                         break;
 
                     case CommandFireBall:
-
-                        if (playerNowMana > 0 && playerNowMana >= manaForFireball)
+                        if (playerCurrentMana > 0 && playerCurrentMana >= manaForFireball)
                         {
                             bossHealth -= playerFireball;
-                            playerNowMana -= manaForFireball;
+                            playerCurrentMana -= manaForFireball;
                             playerCanCastFireball = true;
                             Console.WriteLine($"Вы использовали огненный шар и нанесли {playerFireball} урона\nВы получили {bossDamage} урона от босса");
                         }
@@ -83,11 +82,10 @@ namespace CSharplight
                         break;
 
                     case CommandExplosion:
-
-                        if (playerNowMana > 0 && playerCanCastFireball && playerNowMana >= manaForExplosion)
+                        if (playerCurrentMana > 0 && playerCanCastFireball && playerCurrentMana >= manaForExplosion)
                         {
                             bossHealth -= playerExplosion;
-                            playerNowMana -= manaForExplosion;
+                            playerCurrentMana -= manaForExplosion;
                             playerCanCastFireball = false;
                             Console.WriteLine($"Вы использовали взрыв и нанесли {playerExplosion} урона\nВы получили {bossDamage} урона от босса");
                         }
@@ -98,15 +96,14 @@ namespace CSharplight
                         break;
 
                     case CommandHealing:
-
-                        if (amountOfHealing < maxAmountOfHealing && playerNowHealth < playerMaxHealth || playerNowMana < playerMaxMana)
+                        if (amountOfHealing < maxAmountOfHealing && playerСurrentHealth < playerMaxHealth || playerCurrentMana < playerMaxMana)
                         {
-                            availableHealing = playerMaxHealth - playerNowHealth;
-                            manaRestoration = playerMaxMana - playerNowMana;
+                            availableHealing = playerMaxHealth - playerСurrentHealth;
+                            manaRestoration = playerMaxMana - playerCurrentMana;
                             actualHeal = healingAmount < availableHealing ? healingAmount : availableHealing;
-                            playerNowHealth += actualHeal;
+                            playerСurrentHealth += actualHeal;
                             actualMana = healingAmount < manaRestoration ? healingAmount : manaRestoration;
-                            playerNowMana += actualMana;
+                            playerCurrentMana += actualMana;
                             amountOfHealing++;
                             Console.WriteLine($"Вы использовали лечение и восстановили {healingAmount} здоровья и маны. Вы использовали {amountOfHealing} лечения.");
                         }
@@ -121,29 +118,28 @@ namespace CSharplight
                         break;
 
                     default:
-                        playerNowHealth = playerMaxHealth - bossDamage;
+                        playerСurrentHealth -= bossDamage;
                         Console.WriteLine("Ошибка при вводе команды или не выполнено условие,пропуск хода...\nВы получили {bossDamage} урона от босса");
                         break;
-
                 }
 
                 if (userInput != CommandHealing)
                 {
-                    playerNowHealth -= bossDamage;
+                    playerСurrentHealth -= bossDamage;
                 }
+            }
 
-                if (playerNowHealth <= 0 && bossHealth <= 0)
-                {
-                    Console.WriteLine("герой и босс пали в бою друг с другом...");
-                }
-                else if (bossHealth <= 0)
-                {
-                    Console.WriteLine("Босс пал от руки героя!!!");
-                }
-                else if (playerNowHealth <= 0)
-                {
-                    Console.WriteLine("Герой пал от рук босса...");
-                }
+            if (playerСurrentHealth <= 0 && bossHealth <= 0)
+            {
+                Console.WriteLine("герой и босс пали в бою друг с другом...");
+            }
+            else if (bossHealth <= 0)
+            {
+                Console.WriteLine("Босс пал от руки героя!!!");
+            }
+            else if (playerСurrentHealth <= 0)
+            {
+                Console.WriteLine("Герой пал от рук босса...");
             }
         }
     }
